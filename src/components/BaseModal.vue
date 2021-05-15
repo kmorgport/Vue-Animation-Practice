@@ -1,8 +1,10 @@
 <template>
   <div class="backdrop" @click="$emit('close')"></div>
+  <transition name="modal">
   <dialog open>
     <slot></slot>
   </dialog>
+  </transition>
 </template>
 
 <script>
@@ -35,6 +37,10 @@ dialog {
   z-index: 100;
   border: none;
   animation: modal 0.3s ease-out forwards;
+}
+
+.modal-enter-active{
+  animation: modal 0.3 ease-out;
 }
 
 @keyframes modal{

@@ -4,7 +4,9 @@
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
-    <transition>
+    <!-- transition elements use the v-enter-from -- v-leave to css classes down below -->
+    <!-- the name attribute allows a custom css name for the enter and leave classes -->
+    <transition name="para">
     <p v-if="paraisVisible">This is visible</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -112,5 +114,33 @@ button:active {
   100%{
     transform: translate(-150px) scale(1);
   }
+}
+
+.para-enter-from{
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.para-enter-active{
+  transition: all 0.3s ease-out;
+}
+
+.para-enter-to{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.para-leave-from{
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.para-leave-active{
+  transition: all 0.3s ease-in;
+}
+
+.para-leave-to{
+  opacity: 0;
+  transform: translateY(30px);
 }
 </style>
