@@ -6,13 +6,14 @@
   <div class="container">
     <!-- transition elements use the v-enter-from -- v-leave to css classes down below -->
     <!-- the name attribute allows a custom css name for the enter and leave classes -->
-    <transition name="para">
+    <transition name="para" @before-enter="beforeEnter" @before-leave="beforeLeave">
     <p v-if="paraisVisible">This is visible</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
   </div>
   <div class="container">
     <transition name="fade-button" mode="out-in">
+      <!-- can use multiple children instead of just one if you use v-if v-else -->
       <button @click="showUsers" v-if="!usersAreVisbile">Show Users</button>
       <button @click="hideUsers" v-else>Hide Users</button>
     </transition>
@@ -45,6 +46,12 @@ export default {
     }
   },
   methods: {
+    beforeEnter(){
+      console.log('before enter')
+    },
+    beforeLeave(){
+      console.log('before Leave')
+    },
     showUsers(){
       this.usersAreVisbile = true;
     },
