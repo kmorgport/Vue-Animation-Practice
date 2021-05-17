@@ -6,7 +6,13 @@
   <div class="container">
     <!-- transition elements use the v-enter-from -- v-leave to css classes down below -->
     <!-- the name attribute allows a custom css name for the enter and leave classes -->
-    <transition name="para" @before-enter="beforeEnter" @before-leave="beforeLeave">
+    @enter is the equivalent of the active css class
+    <transition name="para" @before-enter="beforeEnter" 
+    @before-leave="beforeLeave" 
+    @enter="enter" 
+    @after-enter="afterEnter"
+    @leave="leave"
+    @after-leave="afterLeave">
     <p v-if="paraisVisible">This is visible</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -46,11 +52,24 @@ export default {
     }
   },
   methods: {
-    beforeEnter(){
-      console.log('before enter')
+    //there is one parameter that is automatically added to the transition event representing the html element
+    beforeEnter(el){
+      console.log(el)
     },
-    beforeLeave(){
-      console.log('before Leave')
+    beforeLeave(el){
+      console.log(el)
+    },
+    enter(el){
+      console.log(el)
+    },
+    afterEnter(el){
+      console.log(el)
+    },
+    leave(el){
+      console.log(el)
+    },
+    afterLeave(el){
+      console.log(el)
     },
     showUsers(){
       this.usersAreVisbile = true;
