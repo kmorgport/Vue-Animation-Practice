@@ -1,18 +1,26 @@
 <template>
   <div class="container">
+    <users-list></users-list>
+  </div>
+  <div class="container">
     <div class="block" :class="animate"></div>
     <button @click="animateBlock">Animate</button>
   </div>
   <div class="container">
     <!-- transition elements use the v-enter-from -- v-leave to css classes down below -->
     <!-- the name attribute allows a custom css name for the enter and leave classes -->
-    @enter is the equivalent of the active css class
-    <transition name="para" @before-enter="beforeEnter" 
+    <!-- @enter is the equivalent of the active css class -->
+    <!-- :css=false binds the prop and tells the element to skip css -->
+    <transition 
+    :css="false" 
+    @before-enter="beforeEnter" 
     @before-leave="beforeLeave" 
     @enter="enter" 
     @after-enter="afterEnter"
     @leave="leave"
-    @after-leave="afterLeave">
+    @after-leave="afterLeave"
+    @enter-cancelled="enterCancelled"
+    @leave-cancelled="leaveCancelled">
     <p v-if="paraisVisible">This is visible</p>
     </transition>
     <button @click="toggleParagraph">Toggle Paragraph</button>
@@ -34,13 +42,19 @@
 </template>  
 
 <script>
+import UsersList from './components/ListData.vue'
 export default {
+  components: {
+    UsersList
+  },
   data() {
     return { 
       animatedBlock: false,
       dialogIsVisible: false,
       paraisVisible: false,
       usersAreVisbile: false,
+      enterInterval: null,
+      leaveInterval: null
       };
   },
   computed: {
@@ -55,18 +69,47 @@ export default {
     //there is one parameter that is automatically added to the transition event representing the html element
     beforeEnter(el){
       console.log(el)
+      el.style.opacity=0;
+    },
+    enterCancelled(){
+      clearInterval(this.enterInterval)
+    },
+    leaveCancelled(){
+      clearInterval(this.leaveInterval)
     },
     beforeLeave(el){
       console.log(el)
+      el.style.opacity = 1;
     },
-    enter(el){
-      console.log(el)
+    enter(el, done){
+      console.log(el);
+      let round = 1;
+      this.enterInterval = setInterval(()=>{
+        el.style.opacity = round * 0.01;
+        round ++;
+        if(round>100){
+          clearInterval(this.enterInterval);
+          //done() lets vue know when enter is done and will *then cue afteEnter()
+          done();
+        }
+      },20)
     },
     afterEnter(el){
       console.log(el)
     },
-    leave(el){
+    leave(el, done){
       console.log(el)
+      console.log(el);
+      let round = 1;
+      this.leaveInterval = setInterval(()=>{
+        el.style.opacity = 1 - round * 0.01;
+        round ++;
+        if(round>100){
+          clearInterval(this.leaveInterval);
+          //done() lets vue know when enter is done and will *then cue afteEnter()
+          done();
+        }
+      },20)
     },
     afterLeave(el){
       console.log(el)
