@@ -1,44 +1,5 @@
 <template>
-  <div class="container">
-    <users-list></users-list>
-  </div>
-  <div class="container">
-    <div class="block" :class="animate"></div>
-    <button @click="animateBlock">Animate</button>
-  </div>
-  <div class="container">
-    <!-- transition elements use the v-enter-from -- v-leave to css classes down below -->
-    <!-- the name attribute allows a custom css name for the enter and leave classes -->
-    <!-- @enter is the equivalent of the active css class -->
-    <!-- :css=false binds the prop and tells the element to skip css -->
-    <transition 
-    :css="false" 
-    @before-enter="beforeEnter" 
-    @before-leave="beforeLeave" 
-    @enter="enter" 
-    @after-enter="afterEnter"
-    @leave="leave"
-    @after-leave="afterLeave"
-    @enter-cancelled="enterCancelled"
-    @leave-cancelled="leaveCancelled">
-    <p v-if="paraisVisible">This is visible</p>
-    </transition>
-    <button @click="toggleParagraph">Toggle Paragraph</button>
-  </div>
-  <div class="container">
-    <transition name="fade-button" mode="out-in">
-      <!-- can use multiple children instead of just one if you use v-if v-else -->
-      <button @click="showUsers" v-if="!usersAreVisbile">Show Users</button>
-      <button @click="hideUsers" v-else>Hide Users</button>
-    </transition>
-  </div>
-  <base-modal @close="hideDialog" :open="dialogIsVisible">
-    <p>This is a test dialog!</p>
-    <button @click="hideDialog">Close it!</button>
-  </base-modal>
-  <div class="container">
-    <button @click="showDialog">Show Dialog</button>
-  </div>
+  <router-view></router-view>
 </template>  
 
 <script>
